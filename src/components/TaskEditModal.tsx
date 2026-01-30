@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Task, Priority, TaskUpdate } from '../types/index';
+import React, { useState, useEffect } from 'react';
+import { Task, Priority, TaskUpdate, RecurrenceFrequency } from '../types/index';
 import { DEFAULT_CATEGORIES } from '../constants/config';
 import TaskTagsPanel from './TaskTagsPanel';
 import SubtaskList from './SubtaskList';
@@ -7,6 +7,8 @@ import TaskNotesPanel from './TaskNotesPanel';
 import { useTags } from '../hooks/useTags';
 import { useSubtasks } from '../hooks/useSubtasks';
 import { useTaskNotes } from '../hooks/useTaskNotes';
+import { useTaskReminders } from '../hooks/useTaskNotes';
+import { useRecurringTasks } from '../hooks/useRecurringTasks';
 import TaskService from '../services/taskService';
 import '../styles/TaskEditModal.css';
 
@@ -29,6 +31,7 @@ export default function TaskEditModal({ task, onSave, onClose, allTasks = [] }: 
   const [priority, setPriority] = useState<Priority>(task.priority);
   const [category, setCategory] = useState(task.category);
   const [dueDate, setDueDate] = useState(task.dueDate || '');
+  const [recurringFrequency, setRecurringFrequency] = useState<RecurrenceFrequency | ''>(task.recurringConfig?.frequency || '');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'basic' | 'tags' | 'subtasks' | 'notes'>('basic');
@@ -37,6 +40,17 @@ export default function TaskEditModal({ task, onSave, onClose, allTasks = [] }: 
   const { tags: allTags } = useTags(allTasks);
   const { subtasks, addSubtask, toggleSubtask, deleteSubtask, updateSubtaskTitle } = useSubtasks(task.id, task);
   const { saveNotes } = useTaskNotes(task.id, task.notes);
+  const { remindersEnabled, toggleReminders } = useTaskReminders(task.id, task.remindersEnabled);
+  const { makeTaskRecurring, stopTaskRecurring } = useRecurringTasks(allTasks);
+
+  // Sync local state with task prop changes
+  useEffect(() => {
+    setTitle(task.title);
+    setPriority(task.priority);
+    setCategory(task.category);
+    setDueDate(task.dueDate || '');
+    setRecurringFrequency(task.recurringConfig?.frequency || '');
+  }, [task]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,6 +184,40 @@ export default function TaskEditModal({ task, onSave, onClose, allTasks = [] }: 
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
               />
+            </div>
+
+            <div className="form-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={remindersEnabled}
+                  onChange={toggleReminders}
+                />
+                Enable reminders for this task
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-recurring">Recurring Task</label>
+              <select
+                id="edit-recurring"
+                value={recurringFrequency}
+                onChange={(e) => {
+                  const frequency = e.target.value as RecurrenceFrequency | '';
+                  setRecurringFrequency(frequency);
+                  if (frequency) {
+                    makeTaskRecurring(task.id, frequency);
+                  } else {
+                    stopTaskRecurring(task.id);
+                  }
+                }}
+              >
+                <option value="">Not recurring</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
             </div>
 
             <div className="modal-actions">

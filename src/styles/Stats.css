@@ -74,13 +74,27 @@
   margin-top: 4px;
 }
 
-.priority-stats span {
+.stat-card.tag-breakdown {
+  border-left-color: #f093fb;
+  grid-column: 1 / -1;
+}
+
+.tag-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.tag-stat {
   padding: 4px 8px;
   background: var(--bg);
   border-radius: 4px;
   font-weight: 500;
   border: 1px solid var(--border-light);
   color: var(--text);
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {

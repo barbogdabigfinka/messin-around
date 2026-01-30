@@ -4,13 +4,14 @@ import '../styles/Stats.css';
 
 interface StatsProps {
   stats: TaskStats;
+  tagStats?: Record<string, number>;
 }
 
 /**
  * Stats Component
  * Displays task statistics and metrics
  */
-export default function Stats({ stats }: StatsProps) {
+export default function Stats({ stats, tagStats }: StatsProps) {
   const completionRate = stats.total === 0 ? 0 : Math.round((stats.completed / stats.total) * 100);
 
   return (
@@ -58,6 +59,25 @@ export default function Stats({ stats }: StatsProps) {
           </div>
         </div>
       </div>
+
+      {tagStats && Object.keys(tagStats).length > 0 && (
+        <div className="stat-card tag-breakdown">
+          <div className="stat-icon">🏷️</div>
+          <div className="stat-content">
+            <div className="stat-label">Tag Usage</div>
+            <div className="tag-stats">
+              {Object.entries(tagStats)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 5)
+                .map(([tag, count]) => (
+                  <span key={tag} className="tag-stat">
+                    {tag}: {count}
+                  </span>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

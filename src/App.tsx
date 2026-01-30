@@ -7,6 +7,7 @@ import TaskEditModal from './components/TaskEditModal';
 import Stats from './components/Stats';
 import { useTasks, useFilteredTasks, useTaskStats } from './hooks/useTasks';
 import { useTheme } from './hooks/useTheme';
+import { useTagStats } from './hooks/useTags';
 import { TaskFilters as TaskFilterType } from './types/index';
 import './styles/App.css';
 
@@ -29,6 +30,7 @@ export default function App() {
 
   // Get statistics
   const stats = useTaskStats(tasks);
+  const tagStats = useTagStats(tasks);
 
   // Memoize completion count
   const completedCount = useMemo(
@@ -88,7 +90,7 @@ export default function App() {
           )}
 
           {/* Statistics */}
-          <Stats stats={stats} />
+          <Stats stats={stats} tagStats={tagStats} />
 
           {/* Task form */}
           <TaskForm onAdd={addTask} />

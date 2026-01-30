@@ -1,0 +1,125 @@
+:root {
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-light: #eff6ff;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --bg: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+}
+
+[data-theme='dark'] {
+  --primary: #60a5fa;
+  --primary-hover: #3b82f6;
+  --primary-light: #1e3a8a;
+  --bg: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #2d3748;
+  --text: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --border: #374151;
+  --border-light: #2d3748;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 24px 16px;
+  background: var(--bg);
+  transition: background 0.3s ease;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.header {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+  padding: 32px 32px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.header p {
+  font-size: 13px;
+  opacity: 0.9;
+  color: white;
+  font-weight: 500;
+}
+
+.subtitle {
+  font-size: 13px !important;
+  opacity: 0.85;
+  color: white;
+}
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Ensure select and option elements work properly in dark mode */
+select {
+  color: var(--text);
+  background-color: var(--bg-secondary);
+}
+
+option {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+[data-theme='dark'] option {
+  background-color: var(--bg-secondary);
+  color: var(--text);
+}

@@ -1,0 +1,17 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 20px 0;
+  background: var(--bg);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-tertiary);
+}
+
+.empty-state p {
+  font-size: 15px;
+  font-weight: 500;
+}
